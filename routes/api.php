@@ -3,11 +3,19 @@
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('users', [UserController::class,'getUsers']);
+Route::get('users', [UserController::class,'getAllUsers']);
 
-Route::post('validusers', [UserController::class,'registeration']);
+Route::post('validusers', [UserController::class,'register']);
 
-Route::post('users',[UserController::class,'register']);
+Route::post('users',[UserController::class,'create']);
 
-Route::get('allusers',[UserController::class,'getAllUsers']);
+Route::get('allusers',[UserController::class,'findUsers']);
+
+Route::put('users/{id}',[UserController::class,'update']);
+
+Route::delete('users/{id}',[UserController::class,'delete']);
+
+Route::get('/index', [UserController::class, 'index']);
+
+Route::get('/categories', [UserController::class, 'showCategories']);
 

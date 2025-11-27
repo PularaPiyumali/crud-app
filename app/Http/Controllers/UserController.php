@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Validator;
 use App\Rules\EmailDomainRule;
 use Illuminate\Support\Facades\Hash;
 use App\Models\User;
+use App\Models\Post;
 
 
 class UserController extends Controller
@@ -14,7 +15,7 @@ class UserController extends Controller
         return 'Hi Welcome User';
     }
 
-    public function getUsers(){
+    public function getAllUsers(){
         $users = User::all(); 
 
         return response()->json([
@@ -23,7 +24,7 @@ class UserController extends Controller
         ], 200);
     }
 
-    public function registeration(Request $request){
+    public function register(Request $request){
 
         $validatedData = $request->validate([
             'name'=>['required','min:3','max:10'],
@@ -43,7 +44,7 @@ class UserController extends Controller
         return response()->json($data,200);
     }
 
-    public function register(Request $request)
+    public function create(Request $request)
     {
 
         $validator = Validator::make($request->all(), [
@@ -74,10 +75,10 @@ class UserController extends Controller
         ], 200);
     }
 
-    public function getAllUsers(){
+    public function findUsers(){
         $user = User::find(1);       
-        // $user = User::first();       
-        // $user = User::where('email', 'pulara@gmail.com')->first(); 
+        $firstUser = User::first();       
+        $findUser = User::where('email', 'pulara@gmail.com')->first(); 
 
         return response()->json([
             'status' => 200,
@@ -85,5 +86,86 @@ class UserController extends Controller
             'user' => $user
         ], 200);
     }
-    
+
+    public function index (){
+           
+        $postUser = Post::find(2)->user;
+        $userPosts = User::find(2)->posts;
+
+        return [
+        'user_of_post_2' => $postUser,
+        'posts_of_user_2' => $userPosts
+    ];
+
+    }
+
+    public function showCategories() {
+
+    $postCategories = Post::find(3)->categories;
+
+    return [
+        'categories_of_post_3' => $postCategories
+    ];
+    }
+
+    public function update(Request $request,$id){
+
+        $validator = Validator::make($request->all(), [
+            'name' => ['min:3', 'max:10'],
+            'email' => ['email','unique:users,email', new EmailDomainRule()],
+            'password' => ['min:8', 'max:200']
+        ],[
+            'email.unique' => 'This email is already registered',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => 422,
+                'message' => 'Validation failed',
+                'errors' => $validator->errors()
+            ], 422);
+        }
+
+        $validatedData = $validator->validated();
+
+        if (isset($validatedData['password'])) {
+        $validatedData['password'] = Hash::make($validatedData['password']);
+        }
+
+        $user = User::find($id);
+         if (!$user) {
+        return response()->json([
+            'status' => 404,
+            'message' => 'User not found'
+        ], 404);
+    }
+        
+        $user->update($validatedData);
+
+        return response()->json([
+            'status' => 200,
+            'message' => "User successfully updated",
+        ], 200);
+
+    }
+
+    public function delete($id)
+{
+    $user = User::find($id);
+
+    if (!$user) {
+        return response()->json([
+            'status' => 404,
+            'message' => 'User not found'
+        ], 404);
+    }
+
+    $user->delete();
+
+    return response()->json([
+        'status' => 200,
+        'message' => 'User successfully deleted'
+    ], 200);
+}
+
 }

@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('title');
             $table->text('description');
             $table->string('status');
+            $table->foreignId('created_user')->constrained('users')->onDelete('cascade');
             $table->timestamps();
         });
     }
