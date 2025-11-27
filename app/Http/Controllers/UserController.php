@@ -15,7 +15,7 @@ class UserController extends Controller
     }
 
     public function getUsers(){
-        $users = User::paginate(5);
+        $users = User::all(); 
 
         return response()->json([
             'status' => 200,
@@ -71,6 +71,18 @@ class UserController extends Controller
         return response()->json([
             'status' => 200,
             'message' => "User successfully registered",
+        ], 200);
+    }
+
+    public function getAllUsers(){
+        $user = User::find(1);       
+        // $user = User::first();       
+        // $user = User::where('email', 'pulara@gmail.com')->first(); 
+
+        return response()->json([
+            'status' => 200,
+            'message' => "Successfull",
+            'user' => $user
         ], 200);
     }
     

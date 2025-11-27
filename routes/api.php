@@ -9,3 +9,5 @@ Route::post('validusers', [UserController::class,'registeration']);
 
 Route::post('users',[UserController::class,'register']);
 
+Route::get('allusers',[UserController::class,'getAllUsers']);
+
