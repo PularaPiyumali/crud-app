@@ -1,7 +1,7 @@
 <?php
 
 use App\Http\Controllers\UserController;
-use App\Http\Controllers\PostController;
+use App\Http\Controllers\FileController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('users', [UserController::class,'getAllUsers']);
@@ -20,6 +20,4 @@ Route::get('/index', [UserController::class, 'index']);
 
 Route::get('/categories', [UserController::class, 'showCategories']);
 
-Route::post('/upload-file', [PostController::class, 'upload']);
-
-
+Route::post('/upload-file', [FileController::class, 'upload']);

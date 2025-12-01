@@ -16,13 +16,14 @@ class UserController extends Controller
     }
 
     public function getAllUsers(){
-        $users = User::all(); 
+        $users = User::paginate(5);  
 
         return response()->json([
             'status' => 200,
             'users' => $users
         ], 200);
     }
+    
 
     public function register(Request $request){
 
