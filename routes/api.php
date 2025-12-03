@@ -21,3 +21,5 @@ Route::get('/index', [UserController::class, 'index']);
 Route::get('/categories', [UserController::class, 'showCategories']);
 
 Route::post('/upload-file', [FileController::class, 'upload']);
+
+Route::post('/upload-excel', [FileController::class, 'uploadExcel']);

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+</head>
+<body class="bg-gray-100 font-sans antialiased">
+
+    <header class="bg-white shadow p-4">
+        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+            Dashboard
+        </h2>
+    </header>
+
+    <main class="py-12">
+        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+                <div class="p-6 text-gray-900">
+                    <p>{{ __("You're logged in!") }}</p>
+
+                    @php
+                        $role = auth()->user()->getRoleNames()->first();
+                    @endphp
+
+                    @if($role)
+                        <p class="mt-4">
+                            {{ __("You're logged in as") }}
+                            <strong class="text-green-600">{{ ucfirst($role) }}</strong>!
+                        </p>
+                    @else
+                        <p class="mt-4 text-red-600">
+                            {{ __("You're logged in but no role has been assigned.") }}
+                        </p>
+                    @endif
+
+                </div>
+            </div>
+        </div>
+    </main>
+
+</body>
+</html>

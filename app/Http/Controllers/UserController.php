@@ -7,6 +7,7 @@ use App\Rules\EmailDomainRule;
 use Illuminate\Support\Facades\Hash;
 use App\Models\User;
 use App\Models\Post;
+use Spatie\Permission\Models\Role;
 
 
 class UserController extends Controller
@@ -49,7 +50,7 @@ class UserController extends Controller
     {
 
         $validator = Validator::make($request->all(), [
-            'name' => ['required', 'min:3', 'max:10'],
+            'name' => ['required', 'min:3', 'max:200'],
             'email' => ['required', 'email','unique:users,email', new EmailDomainRule()],
             'password' => ['required', 'min:8', 'max:200']
         ],[
@@ -77,9 +78,12 @@ class UserController extends Controller
     }
 
     public function findUsers(){
-        $user = User::find(1);       
+        $user = User::find(11);       
         $firstUser = User::first();       
         $findUser = User::where('email', 'pulara@gmail.com')->first(); 
+        $user->assignRole('user');
+        $user->assignRole('editor', 'user');
+
 
         return response()->json([
             'status' => 200,
@@ -169,4 +173,22 @@ class UserController extends Controller
     ], 200);
 }
 
+public function assignUserRolePermission(){
+
+    $user = User::find(1);
+    $user->givePermissionTo('create posts');
+    $user->givePermissionTo(['edit posts', 'delete posts']);
+
+    $role = Role::findByName('admin');
+    $role->givePermissionTo(['create posts', 'edit posts', 'delete posts']);
+}
+
+public function hasUserRolePermission(){
+
+    $user = User::find(1);
+    $user->hasRole('admin');             
+    $user->can('edit posts');            
+    $user->hasAnyRole(['editor','user']);
+    $user->hasAllPermissions(['edit posts','delete posts']);
+}
 }

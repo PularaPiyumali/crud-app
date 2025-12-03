@@ -9,6 +9,10 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::get('/dashboard', function () {
+    return view('dashboard');
+});
+
 Route::get('/welcome', [UserController::class,'welcome']);
 
 Route::get('/download', [FileController::class, 'export']);

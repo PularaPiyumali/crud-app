@@ -27,7 +27,7 @@ class UsersImport implements ToModel, WithHeadingRow, WithValidation
     public function rules(): array
     {
         return [
-            '*.name'     => 'required|min:3|max:10',
+            '*.name'     => 'required|min:3|max:200',
             '*.email'    => 'required|email|unique:users,email', new EmailDomainRule(),
             '*.password' => 'required|min:8|max:200',
         ];
